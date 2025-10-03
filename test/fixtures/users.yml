@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+alexandre:
+  name: Alexandre Augusto Berns Simao
+
+maria:
+  name: Maria Silva
+
+joao:
+  name: João Santos
+
+ana:
+  name: Ana Costa

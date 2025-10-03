@@ -1,0 +1,294 @@
+<style>
+.activity-detail-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.activity-detail-header {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.activity-detail-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.activity-detail-id {
+  opacity: 0.9;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.activity-detail-content {
+  padding: 2rem;
+}
+
+.activity-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.activity-detail-section {
+  margin-bottom: 2rem;
+}
+
+.activity-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.activity-detail-section.full-width {
+  grid-column: 1 / -1;
+}
+
+.activity-detail-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.activity-detail-value {
+  color: #1f2937;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.activity-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.activity-status-active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.activity-status-inactive {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.activity-type-badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.activity-type-melhoria { background: #dbeafe; color: #1e40af; }
+.activity-type-bug { background: #fee2e2; color: #dc2626; }
+.activity-type-spike { background: #fef3c7; color: #d97706; }
+.activity-type-documentacao, .activity-type-documentação { background: #e0f2fe; color: #0369a1; }
+.activity-type-reuniao, .activity-type-reunião { background: #f3e8ff; color: #7c3aed; }
+
+.activity-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.activity-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.activity-progress-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.activity-priority-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activity-priority-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.activity-priority-1 { background: #ef4444; }
+.activity-priority-2 { background: #f59e0b; }
+.activity-priority-3 { background: #10b981; }
+
+.activity-urgency-badge {
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.activity-urgency-alto { background: #fecaca; color: #991b1b; }
+.activity-urgency-medio, .activity-urgency-médio { background: #fed7aa; color: #c2410c; }
+.activity-urgency-baixo { background: #bbf7d0; color: #166534; }
+
+.activity-points-badge {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  display: inline-block;
+}
+
+.activity-date-value {
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .activity-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .activity-detail-header {
+    padding: 1.5rem;
+  }
+  
+  .activity-detail-content {
+    padding: 1.5rem;
+  }
+}
+</style>
+
+<div id="<%= dom_id activity %>" class="activity-detail-card">
+  <div class="activity-detail-header">
+    <h2 class="activity-detail-title"><%= activity.title %></h2>
+    <p class="activity-detail-id">ID: #<%= activity.id %></p>
+  </div>
+
+  <div class="activity-detail-content">
+    <div class="activity-detail-grid">
+      <div class="activity-detail-section full-width">
+        <span class="activity-detail-label">Descrição</span>
+        <div class="activity-detail-value">
+          <%= activity.description.present? ? activity.description : "Sem descrição" %>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Responsável</span>
+        <div class="activity-detail-value">
+          <% if activity.user %>
+            <%= user_with_avatar(activity.user) %>
+          <% else %>
+            <span style="color: #999;">Não atribuído</span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Status</span>
+        <div class="activity-detail-value">
+          <span class="activity-status-badge <%= activity.status? ? 'activity-status-active' : 'activity-status-inactive' %>">
+            <span><%= activity.status? ? '✓' : '✗' %></span>
+            <span><%= activity.status? ? 'Ativo' : 'Inativo' %></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Data de Início</span>
+        <div class="activity-detail-value activity-date-value">
+          <%= activity.start_date&.strftime("%d/%m/%Y") || "Não definida" %>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Data de Término</span>
+        <div class="activity-detail-value activity-date-value">
+          <%= activity.end_date&.strftime("%d/%m/%Y") || "Não definida" %>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Tipo</span>
+        <div class="activity-detail-value">
+          <span class="activity-type-badge activity-type-<%= activity.kind_value&.downcase&.gsub(' ', '') %>">
+    <%= activity.kind_value %>
+          </span>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Progresso</span>
+        <div class="activity-detail-value">
+          <div class="activity-progress-container">
+            <div class="activity-progress-bar">
+              <div class="activity-progress-fill" style="width: <%= activity.completed_percent || 0 %>%"></div>
+            </div>
+            <span class="activity-progress-text"><%= activity.completed_percent || 0 %>% concluído</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Prioridade</span>
+        <div class="activity-detail-value">
+          <div class="activity-priority-container">
+            <span class="activity-priority-indicator activity-priority-<%= activity.priority %>"></span>
+            <span>Nível <%= activity.priority %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Urgência</span>
+        <div class="activity-detail-value">
+          <span class="activity-urgency-badge activity-urgency-<%= activity.urgency_value&.downcase %>">
+    <%= activity.urgency_value %>
+          </span>
+        </div>
+      </div>
+
+      <div class="activity-detail-section">
+        <span class="activity-detail-label">Pontos</span>
+        <div class="activity-detail-value">
+          <span class="activity-points-badge"><%= activity.points %> pts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,692 @@
+<% content_for :title, "Activities" %>
+
+<!-- Estilos modernos para a listagem -->
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+  
+  h1 {
+    border: none !important;
+    border-bottom: none !important;
+    border-top: none !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 2rem !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+  }
+  
+  h1::after, h1::before {
+    display: none !important;
+    content: none !important;
+  }
+  
+  .controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  }
+  
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+  
+  .btn-secondary:hover:not(:disabled) {
+    background: #4b5563;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .btn-outline-secondary {
+    background: white;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+  }
+  
+  .btn-outline-secondary:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+  }
+  
+  .table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  }
+  
+  .modern-table {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  
+  .modern-table th {
+    background: #f8f9fa;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .modern-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+  
+  .modern-table tbody tr {
+    transition: background-color 0.15s ease;
+  }
+  
+  .modern-table tbody tr:hover {
+    background-color: #f8fafc;
+  }
+  
+  .modern-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .id-badge {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+  
+  .title-cell {
+    font-weight: 600;
+    color: #1e293b;
+    max-width: 200px;
+  }
+  
+  .description-cell {
+    color: #64748b;
+    max-width: 250px;
+    line-height: 1.4;
+  }
+  
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+  
+  .status-active {
+    background: #dcfce7;
+    color: #166534;
+  }
+  
+  .status-inactive {
+    background: #fef2f2;
+    color: #991b1b;
+  }
+  
+  .date-cell {
+    color: #64748b;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    min-width: 90px;
+  }
+  
+  .type-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-align: center;
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+  
+  .type-melhoria { background: #dbeafe; color: #1e40af; }
+  .type-bug { background: #fee2e2; color: #dc2626; }
+  .type-spike { background: #fef3c7; color: #d97706; }
+  .type-documentacao, .type-documentação { background: #e0f2fe; color: #0369a1; }
+  .type-reuniao, .type-reunião { background: #f3e8ff; color: #7c3aed; }
+  
+  .progress-bar {
+    width: 80px;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+  
+  .progress-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    text-align: center;
+  }
+  
+  .priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  
+  .priority-1 { background: #ef4444; }
+  .priority-2 { background: #f59e0b; }
+  .priority-3 { background: #10b981; }
+  
+  .priority-cell {
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+  
+  .urgency-badge {
+    padding: 0.25rem 0.625rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+  
+  .urgency-alto { background: #fecaca; color: #991b1b; }
+  .urgency-medio, .urgency-médio { background: #fed7aa; color: #c2410c; }
+  .urgency-baixo { background: #bbf7d0; color: #166534; }
+  
+  .points-badge {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    min-width: fit-content;
+    text-align: center;
+  }
+  
+  .points-cell {
+    min-width: 80px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .action-btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  
+  .action-show {
+    background: #eff6ff;
+    color: #2563eb;
+  }
+  
+  .action-show:hover {
+    background: #dbeafe;
+  }
+  
+  .action-edit {
+    background: #f0fdf4;
+    color: #16a34a;
+  }
+  
+  .action-edit:hover {
+    background: #dcfce7;
+  }
+  
+  .action-delete {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+  
+  .action-delete:hover {
+    background: #fee2e2;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .empty-icon {
+    font-size: 4rem;
+    color: #d1d5db;
+    margin-bottom: 1.5rem;
+  }
+  
+  .empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+  }
+  
+  .empty-description {
+    color: #6b7280;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .spinner {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .loading-text {
+    margin-top: 1rem;
+    color: #6b7280;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .pagination-info {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-right: 1rem;
+  }
+  
+  .pagination-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
+  }
+  
+  .pagination-btn:hover:not(.disabled) {
+    background: #f9fafb;
+    border-color: #d1d5db;
+  }
+  
+  .pagination-btn.current {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+  }
+  
+  .pagination-btn.disabled {
+    background: #f9fafb;
+    color: #d1d5db;
+    cursor: not-allowed;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<h1>Atividades</h1>
+
+<% if notice %>
+  <p style="color: #059669; background: #ecfdf5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #10b981;"><%= notice %></p>
+<% end %>
+
+<div class="controls-bar">
+  <%= link_to new_activity_path, class: "btn btn-primary" do %>
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg>
+    Nova Atividade
+  <% end %>
+
+  <div style="display: flex; gap: 0.75rem;">
+    <button type="button" 
+            class="btn btn-secondary" 
+            onclick="clearAllFiltersFromPage()"
+            id="clearFiltersBtn"
+            <%= 'disabled' unless params[:filters].present? %>>
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+      </svg>
+      Limpar Filtros
+    </button>
+    
+    <button type="button" 
+            class="btn btn-outline-secondary" 
+            onclick="openFilterModal()"
+            id="filterBtn">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+      </svg>
+      Filtrar
+    </button>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="loading-spinner" style="display: none;">
+  <div class="spinner"></div>
+  <p class="loading-text">Aplicando filtros...</p>
+</div>
+
+<!-- Incluir o modal de filtros -->
+<%= render 'filter_modal' %>
+
+<!-- Container da tabela -->
+<div id="tableContainer">
+  <% if @activities.any? %>
+    <div class="table-container">
+      <div style="overflow-x: auto;">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Descrição</th>
+              <th>Status</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Tipo</th>
+              <th>Progresso</th>
+              <th>Prioridade</th>
+              <th>Urgência</th>
+              <th>Pontos</th>
+              <th>Responsável</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @activities.each do |activity| %>
+              <tr>
+                <td>
+                  <span class="id-badge">#<%= activity.id %></span>
+                </td>
+                <td class="title-cell">
+                  <%= activity.title %>
+                </td>
+                <td class="description-cell">
+                  <%= truncate(activity.description, length: 60) %>
+                </td>
+                <td>
+                  <span class="status-badge <%= activity.status? ? 'status-active' : 'status-inactive' %>">
+                    <span><%= activity.status? ? '✓' : '✗' %></span>
+                    <span><%= activity.status? ? 'Ativo' : 'Inativo' %></span>
+                  </span>
+                </td>
+                <td class="date-cell">
+                  <%= activity.start_date.strftime('%d/%m/%Y') if activity.start_date %>
+                </td>
+                <td class="date-cell">
+                  <%= activity.end_date.strftime('%d/%m/%Y') if activity.end_date %>
+                </td>
+                <td>
+                  <span class="type-badge type-<%= activity.kind_value&.downcase&.gsub(' ', '') %>">
+                    <%= activity.kind_value %>
+                  </span>
+                </td>
+                <td>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: <%= activity.completed_percent %>%"></div>
+                  </div>
+                  <div class="progress-text"><%= activity.completed_percent %>%</div>
+                </td>
+                <td class="priority-cell">
+                  <span class="priority-indicator priority-<%= activity.priority %>"></span>
+                  Nível <%= activity.priority %>
+                </td>
+                <td class="urgency-badge urgency-<%= activity.urgency_value&.downcase %>">
+                  <%= activity.urgency_value %>
+                </td>
+                <td class="points-cell">
+                  <span class="points-badge"><%= activity.points %> pts</span>
+                </td>
+                <td>
+                  <%= user_with_avatar(activity.user) %>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <%= link_to activity, class: "action-btn action-show" do %>
+                      <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                      </svg>
+                      Ver
+                    <% end %>
+                    <%= link_to edit_activity_path(activity), class: "action-btn action-edit" do %>
+                      <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708L10.5 8.207l-3-3L12.146.146zM11.207 9l-3-3L2.5 11.707V13.5a.5.5 0 0 0 .5.5h1.793L11.207 9z"/>
+                      </svg>
+                      Editar
+                    <% end %>
+                    <%= link_to activity, method: :delete, data: { confirm: 'Tem certeza que deseja excluir esta atividade?' }, class: "action-btn action-delete" do %>
+                      <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>
+                      Excluir
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Paginação -->
+    <% if @total_pages > 1 %>
+      <div class="pagination">
+        <div class="pagination-info">
+          Mostrando <%= (@current_page - 1) * @per_page + 1 %>-<%= [@current_page * @per_page, @total_count].min %> de <%= @total_count %> atividades
+        </div>
+        
+        <% if @current_page > 1 %>
+          <%= link_to "« Anterior", activities_path(page: @current_page - 1, filters: params[:filters]), class: "pagination-btn" %>
+        <% else %>
+          <span class="pagination-btn disabled">« Anterior</span>
+        <% end %>
+        
+        <% start_page = [@current_page - 2, 1].max %>
+        <% end_page = [start_page + 4, @total_pages].min %>
+        <% start_page = [end_page - 4, 1].max if end_page - start_page < 4 %>
+        
+        <% (start_page..end_page).each do |page| %>
+          <% if page == @current_page %>
+            <span class="pagination-btn current"><%= page %></span>
+          <% else %>
+            <%= link_to page, activities_path(page: page, filters: params[:filters]), class: "pagination-btn" %>
+          <% end %>
+        <% end %>
+        
+        <% if @current_page < @total_pages %>
+          <%= link_to "Próxima »", activities_path(page: @current_page + 1, filters: params[:filters]), class: "pagination-btn" %>
+        <% else %>
+          <span class="pagination-btn disabled">Próxima »</span>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <!-- Mensagem de nenhum resultado -->
+    <div class="empty-state">
+                  <div class="empty-icon">?</div>
+      <h3 class="empty-title">Nenhuma atividade encontrada</h3>
+      <p class="empty-description">
+        <% if params[:filters].present? %>
+          Não foram encontradas atividades que correspondem aos filtros aplicados.<br>
+          Tente ajustar os critérios de busca ou limpar os filtros para ver todas as atividades.
+        <% else %>
+          Não há atividades cadastradas no sistema.<br>
+          Comece criando sua primeira atividade para organizar seu trabalho.
+        <% end %>
+      </p>
+      <% if params[:filters].present? %>
+        <button type="button" 
+                class="btn btn-primary" 
+                onclick="clearAllFiltersFromPage()"
+                style="margin-right: 1rem;">
+                          Limpar Filtros
+        </button>
+                  <%= link_to "Nova Atividade", new_activity_path, class: "btn btn-outline-secondary" %>
+      <% else %>
+                  <%= link_to "Criar Primeira Atividade", new_activity_path, class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+// Função para mostrar/esconder loading
+function showLoading() {
+  document.getElementById('loadingSpinner').style.display = 'block';
+  document.getElementById('tableContainer').style.display = 'none';
+  document.getElementById('filterBtn').disabled = true;
+  document.getElementById('clearFiltersBtn').disabled = true;
+}
+
+function hideLoading() {
+  document.getElementById('loadingSpinner').style.display = 'none';
+  document.getElementById('tableContainer').style.display = 'block';
+  document.getElementById('filterBtn').disabled = false;
+  // clearFiltersBtn será habilitado/desabilitado pela função updatePageButtons
+}
+
+// Função para limpar todos os filtros da página principal
+function clearAllFiltersFromPage() {
+  showLoading();
+  
+  fetch('/activities')
+    .then(response => response.text())
+    .then(html => {
+      // Criar um elemento temporário para parsear o HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      
+      // Extrair o novo container da tabela
+      const newTableContainer = tempDiv.querySelector('#tableContainer');
+      
+      if (newTableContainer) {
+        // Substituir o container atual
+        const currentContainer = document.getElementById('tableContainer');
+        if (currentContainer) {
+          currentContainer.innerHTML = newTableContainer.innerHTML;
+        }
+      }
+      
+      // Atualizar a URL sem recarregar
+      const url = new URL(window.location);
+      url.searchParams.delete('filters');
+      window.history.pushState({}, '', url.toString());
+      
+      // Desabilitar o botão "Limpar filtros"
+      const clearButton = document.getElementById('clearFiltersBtn');
+      if (clearButton) {
+        clearButton.disabled = true;
+      }
+      
+      hideLoading();
+    })
+    .catch(error => {
+      console.error('Erro ao limpar filtros:', error);
+      hideLoading();
+      // Em caso de erro, usar o método tradicional (recarregar página)
+      const url = new URL(window.location);
+      url.searchParams.delete('filters');
+      window.location.href = url.toString();
+    });
+}
+</script>

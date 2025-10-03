@@ -1,0 +1,617 @@
+/* ===== FONTES E VARIÁVEIS ===== */
+:root {
+  --font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
+  
+  /* Cores */
+  --color-white: #FFFFFF;
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+  
+  --color-blue-50: #E0F2FE;
+  --color-blue-600: #0284C7;
+  --color-blue-700: #0369A1;
+  
+  --color-yellow-100: #FEF9C3;
+  --color-yellow-600: #CA8A04;
+  
+  --color-red-600: #DC2626;
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== MODAL PRINCIPAL ===== */
+.filter-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+}
+
+.filter-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.filter-modal-content {
+  position: relative;
+  background: var(--color-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.filter-modal-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.filter-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.filter-modal-close:hover {
+  color: var(--color-gray-600);
+  background: var(--color-gray-100);
+}
+
+/* ===== BODY ===== */
+.filter-modal-body {
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ===== GRUPOS DE FILTROS ===== */
+.filter-groups {
+  margin-bottom: 16px;
+}
+
+/* Container do grupo com operador à esquerda */
+.filter-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== OPERADOR DO GRUPO (À ESQUERDA) ===== */
+.group-operator-section {
+  min-width: 80px;
+  padding-top: 8px;
+}
+
+.group-operator-select {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 6px;
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* Adicionar seta de dropdown */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 40px;
+}
+
+.group-operator-select:focus {
+  border-color: var(--color-blue-600);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-blue-600);
+}
+
+/* Primeiro grupo - label "Onde" */
+.filter-group:first-child .group-operator-section {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.filter-group:first-child .group-operator-select {
+  border: none;
+  background: none;
+  color: var(--color-gray-700);
+  font-weight: 500;
+  cursor: default;
+  padding: 0;
+  background-image: none;
+}
+
+/* ===== CARD DO GRUPO (À DIREITA) ===== */
+.group-filters-container {
+  flex: 1;
+  background: #EDF2F7;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== LISTA DE FILTROS ===== */
+.group-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  transition: all 0.2s ease;
+}
+
+.filter-row:hover {
+  background: var(--color-gray-50);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 0 -12px;
+}
+
+/* ===== OPERADORES ENTRE FILTROS ===== */
+.filter-operator-section {
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-operator-select {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 6px;
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 400;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* Adicionar seta de dropdown */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  padding-right: 32px;
+}
+
+.filter-operator-select:focus {
+  border-color: var(--color-blue-600);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-blue-600);
+}
+
+/* ===== CAMPOS E INPUTS ===== */
+.filter-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.filter-field-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.filter-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-500);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.filter-field-select,
+.filter-value-input {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 6px;
+  background: var(--color-white);
+  color: var(--color-gray-900);
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+.filter-field-select {
+  flex: 1;
+  min-width: 140px;
+  /* Adicionar ícone de seta para dropdowns normais */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.filter-value-input {
+  flex: 1;
+  min-width: 160px;
+}
+
+/* Quando o campo de valor é um select */
+.filter-value-input[type="select"],
+select.filter-value-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.filter-field-select:focus,
+.filter-value-input:focus {
+  border-color: var(--color-blue-600);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-blue-600);
+}
+
+.filter-value-input::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* ===== BOTÃO REMOVER ===== */
+.filter-remove-section {
+  min-width: 32px;
+}
+
+.btn-remove-filter {
+  background: none;
+  border: none;
+  color: var(--color-gray-400);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.btn-remove-filter:hover {
+  color: var(--color-red-600);
+  background: var(--color-gray-100);
+}
+
+/* ===== BOTÃO ADICIONAR FILTRO AGRUPADO ===== */
+.filter-add-inside {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.add-grouped-filter {
+  background: none;
+  border: none;
+  color: var(--color-blue-600);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.add-grouped-filter:hover {
+  color: var(--color-blue-700);
+  text-decoration: underline;
+}
+
+.plus-icon {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-blue-600);
+}
+
+/* ===== BOTÃO ADICIONAR GRUPO (REMOVIDO - AGORA NO FOOTER) ===== */
+
+/* ===== FOOTER ===== */
+.filter-modal-footer {
+  padding: 16px;
+  border-top: 1px solid var(--color-gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-white);
+  border-radius: 0 0 12px 12px;
+}
+
+.filter-modal-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+/* Botão Aplicar - Azul Primário */
+.btn-primary {
+  background: var(--color-blue-600);
+  color: var(--color-white);
+  border-color: var(--color-blue-600);
+}
+
+.btn-primary:hover {
+  background: var(--color-blue-700);
+  border-color: var(--color-blue-700);
+}
+
+/* Botão Cancelar - Outline */
+.btn-outline-primary {
+  background: var(--color-white);
+  color: var(--color-gray-700);
+  border-color: var(--color-gray-300);
+}
+
+.btn-outline-primary:hover {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-400);
+}
+
+/* Botão Limpar - Texto */
+.btn-secondary {
+  background: none;
+  color: var(--color-gray-500);
+  border: none;
+  padding: 0 8px;
+}
+
+.btn-secondary:hover {
+  color: var(--color-gray-700);
+  text-decoration: underline;
+}
+
+.btn-secondary:disabled {
+  background: #e9ecef;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  cursor: not-allowed;
+  opacity: 0.6;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+}
+
+/* ===== SELECT CUSTOMIZADO ===== */
+/* Estilo geral para todos os selects */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 40px;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+  .filter-modal-content {
+    width: 95%;
+    max-width: none;
+    margin: 20px;
+  }
+  
+  .filter-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .group-operator-section {
+    min-width: auto;
+    padding-top: 0;
+  }
+  
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .filter-main {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .filter-field-section {
+    min-width: auto;
+  }
+  
+  .filter-modal-footer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter-modal-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ===== ANIMAÇÕES ===== */
+.filter-modal {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.filter-modal-content {
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== ESTADOS DESABILITADOS ===== */
+.btn:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover,
+select:disabled:hover {
+  opacity: 0.6;
+}
+
+/* ===== AJUSTES ESPECÍFICOS ===== */
+/* Esconder o antigo grupo de ações */
+.group-actions {
+  display: none;
+}
+
+/* Estilo especial para campos de usuário */
+.filter-value-input.user-select {
+  padding-left: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: 12px center, right 12px center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 16px 16px, 16px 16px;
+  padding-right: 40px;
+}
+
+/* Estilo especial para campos de data */
+.filter-value-input.date-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B7280' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5 0zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'/%3E%3C/svg%3E");
+  background-position: calc(100% - 32px) center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 60px;
+}
+
+/* ===== BOTÃO OUTLINE SECONDARY ===== */
+.btn-outline-secondary {
+  background: var(--color-white);
+  color: var(--color-gray-700);
+  border: 1px solid var(--color-gray-300);
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+}
+
+.btn-outline-secondary:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-gray-400);
+}
+
+/* Ajustar estilo do botão adicionar filtro */
+.add-filter-group {
+  /* Herda estilos do btn-outline-secondary */
+}
+
+ 
